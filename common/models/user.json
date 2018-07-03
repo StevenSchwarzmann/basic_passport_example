@@ -2,6 +2,12 @@
   "name": "user",
   "plural": "users",
   "base": "User",
+  "properties": {
+    "emailVerified": {
+      "type": "boolean",
+      "default": true
+    }
+  },
   "relations": {
     "accessTokens": {
       "type": "hasMany",

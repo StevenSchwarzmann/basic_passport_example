@@ -1,7 +1,6 @@
-// Copyright IBM Corp. 2014,2016. All Rights Reserved.
-// Node module: loopback-example-passport
-// This file is licensed under the MIT License.
-// License text available at https://opensource.org/licenses/MIT
+//ACCESS TOKEN EXISTS IN REQ.SIGNEDCOOKIES.ACCESSTOKEN
+//INSTANCE OF ACCESSTOKEN MODEL IS NOT CREATED AFTER LOCAL LOGIN
+//INSTANCE OF ACCESSTOKEN MODEL IS CREATED AFTER SOCIAL LOGIN
 'use strict';
 
 var loopback = require('loopback');
@@ -87,7 +86,11 @@ for (var s in config) {
 }
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
+//Overrides factory ACL's
+app.models.user.settings.acls = require('./user-acls.json');
+
 app.get('/', function(req, res, next) {
+  console.log('ROOT REQ: ', req);
   res.render('pages/index', {user:
     req.user,
     url: req.url,
@@ -95,6 +98,8 @@ app.get('/', function(req, res, next) {
 });
 
 app.get('/auth/account', ensureLoggedIn('/login'), function(req, res, next) {
+  console.log('/auth/account HIT');
+  console.log('REQ: ', req);
   res.render('pages/loginProfiles', {
     user: req.user,
     url: req.url,
@@ -140,11 +145,29 @@ app.post('/signup', function(req, res, next) {
       // primarily used when users sign up, during which req.login() can
       // be invoked to log in the newly registered user.
       req.login(user, function(err) {
+        console.log('User: ', user);
         if (err) {
           req.flash('error', err.message);
           return res.redirect('back');
         }
-        return res.redirect('/auth/account');
+        return User.login({ username: newUser.username, password: newUser.password }, (err, token) => {
+          if (err) {
+            console.log(`ERROR LOGIN IN::: ${err}`);
+            req.flash('error', err.message);
+            return res.redirect('back');
+          }
+          //Manually set cookies here
+          res.cookie('access_token', token.id, {
+            signed: true,
+            maxAge: 1000 * token.ttl
+          });
+          res.cookie('userId', token.userId, {
+            signed: true,
+            maxAge: 1000 * token.ttl
+          });
+
+          return res.redirect('/auth/account');
+        });
       });
     }
   });
@@ -158,6 +181,8 @@ app.get('/login', function(req, res, next) {
 });
 
 app.get('/auth/logout', function(req, res, next) {
+  res.clearCookie('access_token');
+  res.clearCookie('userId');
   req.logout();
   res.redirect('/');
 });

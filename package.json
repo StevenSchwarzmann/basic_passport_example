@@ -8,6 +8,8 @@
     "posttest": "npm run lint"
   },
   "dependencies": {
+    "babel-loader": "^7.1.4",
+    "babel-runtime": "^6.26.0",
     "body-parser": "^1.9.0",
     "compression": "^1.0.11",
     "connect-ensure-login": "^0.1.1",
@@ -18,6 +20,7 @@
     "jade": "^1.7.0",
     "loopback": "^3.0.0",
     "loopback-boot": "^2.0.0",
+    "loopback-component-explorer": "^2.1.0",
     "loopback-component-passport": "^2.2.0",
     "passport": "^0.2.0",
     "passport-facebook": "^1.0.3",
@@ -27,8 +30,7 @@
     "passport-oauth2": "^1.1.2",
     "passport-twitter": "^1.0.2",
     "serve-favicon": "^2.0.1",
-    "strong-error-handler": "^1.1.0",
-    "loopback-component-explorer": "^2.1.0"
+    "strong-error-handler": "^1.1.0"
   },
   "devDependencies": {
     "eslint": "^2.5.3",
