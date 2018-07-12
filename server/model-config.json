@@ -7,34 +7,34 @@
     ]
   },
   "user": {
-    "dataSource": "db",
+    "dataSource": "MongoDB",
     "public": true,
     "options": {
       "emailVerificationRequired": false
     }
   },
   "accessToken": {
-    "dataSource": "db",
+    "dataSource": "MongoDB",
     "public": true
   },
   "userCredential": {
-    "dataSource": "db",
+    "dataSource": "MongoDB",
     "public": true
   },
   "userIdentity": {
-    "dataSource": "db",
+    "dataSource": "MongoDB",
     "public": true
   },
   "ACL": {
-    "dataSource": "db",
+    "dataSource": "MongoDB",
     "public": true
   },
   "RoleMapping": {
-    "dataSource": "db",
+    "dataSource": "MongoDB",
     "public": true
   },
   "Role": {
-    "dataSource": "db",
+    "dataSource": "MongoDB",
     "public": true
   }
 }
